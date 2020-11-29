@@ -90,7 +90,7 @@ class Gallery extends REST_Controller
         $data = [
             'nama' => $this->put('nama'),
             'gambar' => $this->put('gambar'),
-            'tipe' => $this->post('tipe')
+            'tipe' => $this->put('tipe')
         ];
 
         if ($this->gallery->updateGallery($data, $id) > 0) {
