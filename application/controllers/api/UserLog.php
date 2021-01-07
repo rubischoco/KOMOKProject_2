@@ -6,27 +6,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . 'libraries/REST_Controller.php';
 require APPPATH . 'libraries/Format.php';
 
-class UserExperience extends REST_Controller
+class UserLog extends REST_Controller
 {
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('UserExperience_model', 'userExperience');
+        $this->load->model('UserLog_model', 'userLog');
     }
 
     public function index_get() 
     {
         $id = $this->get('id');
         if ($id === null){
-            $userExperience = $this->userExperience->getUserExperience();
+            $userLog = $this->userLog->getUserLog();
         } else {
-            $userExperience = $this->userExperience->getUserExperience($id);
+            $userLog = $this->userLog->getUserLog($id);
         }
         
-        if ($userExperience) {
+        if ($userLog) {
             $this->response([
                 'status' => true,
-                'data' => $userExperience
+                'data' => $userLog
             ], REST_Controller::HTTP_OK);
         } else {
             $this->response([
@@ -46,7 +46,7 @@ class UserExperience extends REST_Controller
                 'message' => 'provide an id!'
             ], REST_Controller::HTTP_BAD_REQUEST);
         } else {
-            if ( $this->userExperience->deleteUserExperience($id) > 0 ) {
+            if ( $this->userLog->deleteUserLog($id) > 0 ) {
                 // ok
                 $this->response([
                     'status' => true,
@@ -67,17 +67,14 @@ class UserExperience extends REST_Controller
     {
         $data = [
             'email' => $this->post('email'),
-            'swap' => $this->post('swap'),
-            'crop' => $this->post('crop'),
-            'mix' => $this->post('mix'),
-            'help' => $this->post('help'),
-            'about' => $this->post('about')
+            'action' => $this->post('action'),
+            'time' => $this->post('time')
         ];
 
-        if ($this->userExperience->createUserExperience($data) > 0) {
+        if ($this->userLog->createUserLog($data) > 0) {
             $this->response([
                 'status' => true,
-                'message' => 'new experience has been created.'
+                'message' => 'new log has been created.'
             ], REST_Controller::HTTP_CREATED);
         } else {
             $this->response([
@@ -92,17 +89,14 @@ class UserExperience extends REST_Controller
         $id = $this->put('id');
         $data = [
             'email' => $this->put('email'),
-            'swap' => $this->put('swap'),
-            'crop' => $this->put('crop'),
-            'mix' => $this->put('mix'),
-            'help' => $this->put('help'),
-            'about' => $this->put('about')
+            'action' => $this->put('action'),
+            'time' => $this->put('time')
         ];
 
-        if ($this->userExperience->updateUserExperience($data, $id) > 0) {
+        if ($this->userLog->updateUserLog($data, $id) > 0) {
             $this->response([
                 'status' => true,
-                'message' => 'data experience has been updated.'
+                'message' => 'data log has been updated.'
             ], REST_Controller::HTTP_OK);
         } else {
             $this->response([
